@@ -4,7 +4,8 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
-// ...
+import workoutRoutes from "./routes/workoutRoutes";
+import progressRoutes from "./routes/progressRoutes";
 
 
 // Load environment variables
@@ -18,6 +19,8 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/workouts", workoutRoutes);
+app.use("/api/progress", progressRoutes);
 
 
 // Database connection

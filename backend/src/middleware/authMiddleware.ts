@@ -1,15 +1,15 @@
 import jwt from "jsonwebtoken";
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import { User } from "../models/User";
+import { AuthRequest } from "../types/express";
 
-interface AuthRequest extends Request {
-  user?: any;
-}
-
-export const protect = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const protect = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
   const token = req.headers.authorization?.split(" ")[1];
 
-  if (!token) return res.status(401).json({ message: "No token" });
+  if (!token) {
+    res.status(401).json({ message: "No token" });
+    return;
+  }
 
   try {
     const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);

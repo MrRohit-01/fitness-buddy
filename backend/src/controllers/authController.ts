@@ -3,11 +3,14 @@ import bcrypt from "bcryptjs";
 import { User } from "../models/User";
 import { generateToken } from "../utils/generateToken";
 
-export const registerUser = async (req: Request, res: Response) => {
+export const registerUser = async (req: Request, res: Response): Promise<void> => {
   const { name, email, password, fitnessGoal } = req.body;
 
   const userExists = await User.findOne({ email });
-  if (userExists) return res.status(400).json({ message: "User already exists" });
+  if (userExists) {
+    res.status(400).json({ message: "User already exists" });
+    return;
+  }
 
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = await User.create({ name, email, password: hashedPassword, fitnessGoal });
@@ -25,7 +28,7 @@ export const registerUser = async (req: Request, res: Response) => {
   }
 };
 
-export const loginUser = async (req: Request, res: Response) => {
+export const loginUser = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
