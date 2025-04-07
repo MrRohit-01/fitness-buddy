@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import { User } from "../models/User";
+import { User, IUser } from "../models/User";
 import { generateToken } from "../utils/generateToken";
 
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
@@ -13,7 +13,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  const user = await User.create({ name, email, password: hashedPassword, fitnessGoal });
+  const user = await User.create({ name, email, password: hashedPassword, fitnessGoal }) as IUser & { _id: any };
 
   if (user) {
     res.status(201).json({
@@ -31,7 +31,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }) as IUser & { _id: any };
   if (user && (await bcrypt.compare(password, user.password))) {
     res.json({
       _id: user._id,

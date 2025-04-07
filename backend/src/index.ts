@@ -6,6 +6,7 @@ import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import workoutRoutes from "./routes/workoutRoutes";
 import progressRoutes from "./routes/progressRoutes";
+import socialRoutes from "./routes/socialRoutes";
 
 
 // Load environment variables
@@ -21,6 +22,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/workouts", workoutRoutes);
 app.use("/api/progress", progressRoutes);
+
+app.use("/api/social", socialRoutes);
+
 
 
 // Database connection
